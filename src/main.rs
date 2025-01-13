@@ -10,6 +10,9 @@ use yabai::move_current_window_to_grid;
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
 struct Args {
+    #[arg(short, long, default_value="/tmp/yabai-rectangle-grid", help = "tmp file path")]
+    tmp_file_path: String,
+    
     #[arg(short, long, default_value = "2x3", help = "row x column")]
     grid: String,
     
@@ -89,7 +92,7 @@ fn calc_next_window_position_grid(prev_status: &WindowStatus, grid: &Grid) -> Wi
 fn main() {
     let args = Args::parse();
 
-    let tmp_file_path = String::from(std::env::temp_dir().to_str().unwrap());
+    let tmp_file_path = args.tmp_file_path;
     let grid = match Grid::try_from(args.grid) {
         Ok(grid) => grid,
         Err(e) => {
